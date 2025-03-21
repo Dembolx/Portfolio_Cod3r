@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Your Training Session</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="logo"><span>FitPro</span> Trainer</div>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#booking">Book Now</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section id="home" class="hero">
+      <div class="container">
+        <h1>Transform Your Body</h1>
+        <p>
+          Book your personal training session today and achieve your fitness
+          goals!
+        </p>
+        <a href="#booking" class="cta-button">Book Now</a>
+      </div>
+    </section>
+
+    <section id="services" class="services">
+      <div class="container">
+        <h2>Our Services</h2>
+        <div class="service-list">
+          <div class="service-item">
+            <h3>Personal Training</h3>
+            <p>One-on-one sessions tailored to your fitness goals.</p>
+            <span class="price">$50/session</span>
+          </div>
+          <div class="service-item">
+            <h3>Group Classes</h3>
+            <p>Join our high-energy group workouts.</p>
+            <span class="price">$20/session</span>
+          </div>
+          <div class="service-item">
+            <h3>Gym Membership</h3>
+            <p>Access to our state-of-the-art gym facilities.</p>
+            <span class="price">$100/month</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="booking" class="booking-section">
+      <div class="container">
+        <h2>Book Your Session</h2>
+        <div class="booking-container">
+          <div id="calendar"></div>
+          <form id="booking-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" required />
+            </div>
+            <div class="form-group">
+              <label for="session-type">Session Type</label>
+              <select id="session-type" required>
+                <option value="personal">
+                  Personal Training - $50/session
+                </option>
+                <option value="group">Group Class - $20/session</option>
+                <option value="gym">Gym Membership - $100/month</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date">Preferred Date</label>
+              <input type="date" id="date" required />
+            </div>
+            <div class="form-group">
+              <label for="time">Preferred Time</label>
+              <input type="time" id="time" required />
+            </div>
+            <div class="form-group">
+              <label for="notes">Additional Notes</label>
+              <textarea id="notes" rows="4"></textarea>
+            </div>
+            <button type="submit">Confirm Booking</button>
+          </form>
+        </div>
+        <div id="confirmation" class="confirmation">
+          <div class="success-icon">✓</div>
+          <p>Your booking has been confirmed! Check your email for details.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2023 FitPro Trainer. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
