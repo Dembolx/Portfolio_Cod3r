@@ -23,6 +23,237 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Scripts -->
+<!-- Scripts -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+
+<script>
+  // Inicjalizacja EmailJS
+  emailjs.init('9gxouQUbzS9PIbVfM');
+
+  // Konfiguracja Firebase - upewnij się, że dane są prawidłowe
+  const firebaseConfig = {
+    apiKey: "AIzaSyAaADfrLI-9w_GTMZtI91swAKQ9EWxhWSs",
+    authDomain: "opinie-do-portfolio.firebaseapp.com",
+    databaseURL: "https://opinie-do-portfolio-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "opinie-do-portfolio",
+    storageBucket: "opinie-do-portfolio.appspot.com",
+    messagingSenderId: "4918334258",
+    appId: "1:4918334258:web:c2cec434f53beed5943d2b",
+    measurementId: "G-F7RS35VFJN"
+  };
+
+  // Inicjalizacja Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // Główna funkcja po załadowaniu DOM
+  document.addEventListener('DOMContentLoaded', function() {
+    initContactForm();
+    initOpinieSystem();
+  });
+
+  // Obsługa formularza kontaktowego
+  function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+
+    const submitBtn = contactForm.querySelector('[data-form-btn]');
+    
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Wysyłanie...</span>';
+
+      emailjs.sendForm('service_5a28f8g', 'template_uzpl48p', contactForm)
+        .then(function() {
+          alert('Wiadomość wysłana pomyślnie!');
+          contactForm.reset();
+        })
+        .catch(function(error) {
+          console.error('Błąd wysyłania wiadomości:', error);
+          alert('Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie później.');
+        })
+        .finally(function() {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Wyślij wiadomość</span>';
+        });
+    });
+  }
+
+  // System opinii
+  function initOpinieSystem() {
+    const opinieForm = document.getElementById('formularz-opinii');
+    if (!opinieForm) return;
+
+    // Pobierz i wyświetl opinie
+    loadOpinie();
+
+    // Obsługa wysyłania nowej opinii
+    opinieForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const imie = this.imie.value.trim();
+      const ocena = parseInt(document.querySelector('input[name="ocena"]:checked').value);
+      const tresc = this.tresc.value.trim();
+
+      if (!imie || !tresc) {
+        alert('Proszę wypełnić wszystkie wymagane pola!');
+        return;
+      }
+
+      const nowaOpinie = {
+        imie: imie,
+        ocena: ocena,
+        tresc: tresc,
+        data: new Date().toISOString()
+      };
+
+      try {
+        // Dodaj opinie lokalnie od razu
+        addOpinieLocally(nowaOpinie);
+        this.reset();
+        
+        // Zapisz do Firebase
+        const opinieRef = await saveOpinie(nowaOpinie);
+        console.log('Opinia zapisana z ID:', opinieRef.key);
+        alert('Dziękujemy za Twoją opinię!');
+      } catch (error) {
+        console.error('Błąd zapisywania opinii:', error);
+        alert('Opinia została dodana lokalnie, ale wystąpił błąd podczas zapisywania w bazie danych.');
+      }
+    });
+  }
+
+  // Dodawanie opinii do widoku
+  function addOpinieLocally(nowaOpinie) {
+    const opinieContainer = document.querySelector('.opinie-container');
+    if (!opinieContainer) return;
+
+    // Usuń komunikat o braku opinii jeśli istnieje
+    const brakOpinii = opinieContainer.querySelector('.brak-opinii');
+    if (brakOpinii) brakOpinii.remove();
+
+    const gwiazdki = '★'.repeat(nowaOpinie.ocena) + '☆'.repeat(5 - nowaOpinie.ocena);
+    const data = new Date(nowaOpinie.data).toLocaleDateString('pl-PL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    // Tymczasowe ID dla lokalnej opinii
+    const tempId = 'temp-' + Date.now();
+    
+    const opiniaHTML = `
+      <div class="opinie-item" data-id="${tempId}">
+        <div class="naglowek">
+          <span class="autor">${nowaOpinie.imie}</span>
+          <span class="data">${data}</span>
+        </div>
+        <div class="ocena">${gwiazdki}</div>
+        <div class="tresc">${nowaOpinie.tresc}</div>
+      </div>
+    `;
+    
+    // Dodaj na początek listy
+    opinieContainer.insertAdjacentHTML('afterbegin', opiniaHTML);
+  }
+
+  // Zapis opinii do Firebase
+  async function saveOpinie(nowaOpinie) {
+    const nowyRef = database.ref('opinie/').push();
+    await nowyRef.set(nowaOpinie);
+    return nowyRef;
+  }
+
+  // Ładowanie opinii z Firebase
+  function loadOpinie() {
+    const opinieRef = database.ref('opinie/');
+    const opinieContainer = document.querySelector('.opinie-container');
+    
+    if (!opinieContainer) return;
+
+    // Najpierw wyczyść kontener
+    opinieContainer.innerHTML = '';
+
+    opinieRef.on('value', (snapshot) => {
+        const opinieData = snapshot.val();
+        
+        if (!opinieData || Object.keys(opinieData).length === 0) {
+            opinieContainer.innerHTML = '<p class="brak-opinii">Brak opinii. Bądź pierwszy który doda opinię!</p>';
+            return;
+        }
+
+        // Konwersja do tablicy i sortowanie od najnowszych
+        const opinieArray = Object.entries(opinieData)
+            .map(([id, opinia]) => ({ id, ...opinia }))
+            .sort((a, b) => new Date(b.data) - new Date(a.data));
+
+        // Generowanie HTML dla opinii
+        opinieArray.forEach((opinia, index) => {
+            const gwiazdki = '★'.repeat(opinia.ocena) + '☆'.repeat(5 - opinia.ocena);
+            const data = new Date(opinia.data).toLocaleDateString('pl-PL', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const opiniaElement = document.createElement('div');
+            opiniaElement.className = 'opinie-item';
+            opiniaElement.style.animationDelay = `${index * 0.1}s`;
+            opiniaElement.innerHTML = `
+                <div class="naglowek">
+                    <span class="autor">${opinia.imie}</span>
+                    <span class="data">${data}</span>
+                </div>
+                <div class="ocena">${gwiazdki}</div>
+                <div class="tresc">${opinia.tresc}</div>
+            `;
+            
+            opinieContainer.appendChild(opiniaElement);
+        });
+    });
+}
+
+  // Zarządzanie sekcjami
+  function showSection(sectionId) {
+    // Ukryj wszystkie sekcje
+    document.querySelectorAll("[data-page]").forEach((section) => {
+      section.style.display = "none";
+      section.classList.remove("active");
+    });
+
+    // Pokaż wybraną sekcję
+    const activeSection = document.getElementById(sectionId + "-section");
+    if (activeSection) {
+      activeSection.style.display = "block";
+      activeSection.classList.add("active");
+      
+      // Jeśli to sekcja opinii, odśwież listę
+      if (sectionId === 'opinie') {
+        loadOpinie();
+      }
+    }
+
+    // Aktualizuj aktywny przycisk w navbarze
+    document.querySelectorAll(".navbar-link").forEach((link) => {
+      link.classList.remove("active");
+    });
+    
+    const activeNavLink = document.querySelector(
+      `[data-nav-link][onclick="showSection('${sectionId}')"]`
+    );
+    if (activeNavLink) {
+      activeNavLink.classList.add("active");
+    }
+  }
+</script>
   </head>
 
   <body>
@@ -60,7 +291,7 @@
                 <a
                   href="mailto:michal.stepczynski2006@gmail.com"
                   class="contact-link"
-                  >michal.stepczynski2006@gmail.com</a
+                  >coffee.cod3r.business@gmail.com</a
                 >
               </div>
             </li>
@@ -139,6 +370,12 @@
                 onclick="showSection('portfolio')"
               >
                 Portfolio
+              </button>
+            </li>
+            <!-- W sekcji navbar dodaj nowy przycisk -->
+            <li class="navbar-item">
+              <button class="navbar-link" data-nav-link onclick="showSection('opinie')">
+                Opinie
               </button>
             </li>
             <li class="navbar-item">
@@ -498,124 +735,129 @@
           </section>
         </article>
 
+
+
+         <!-- Sekcja Opinie -->
+        <article id="opinie-section" class="opinie" data-page="opinie" style="display: none">
+          <header>
+            <h2 class="h2 article-title">Opinie klientów</h2>
+          </header>
+
+          <section class="opinie-content">
+            <h3 class="h3 opinie-title">Co mówią o mnie klienci</h3>
+            
+            <!-- Formularz dodawania opinii -->
+            <div class="dodaj-opinie">
+              <h4 class="h4">Dodaj swoją opinię</h4>
+              <form id="formularz-opinii" class="formularz-opinii">
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    name="imie"
+                    class="form-input"
+                    placeholder="Twoje imię"
+                    required
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="Twój email (nie będzie publikowany)"
+                    required
+                  />
+                </div>
+                
+                <div class="ocena-wrapper">
+                  <label>Ocena:</label>
+                  <!-- W pliku HTML -->
+                  <div class="gwiazdki-oceny">
+                      <input type="radio" id="gwiazdka5" name="ocena" value="5">
+                      <label for="gwiazdka5">★</label>
+                      <input type="radio" id="gwiazdka4" name="ocena" value="4">
+                      <label for="gwiazdka4">★</label>
+                      <input type="radio" id="gwiazdka3" name="ocena" value="3">
+                      <label for="gwiazdka3">★</label>
+                      <input type="radio" id="gwiazdka2" name="ocena" value="2">
+                      <label for="gwiazdka2">★</label>
+                      <input type="radio" id="gwiazdka1" name="ocena" value="1" checked>
+                      <label for="gwiazdka1">★</label>
+                  </div>
+                </div>
+                
+                <textarea
+                  name="tresc"
+                  class="form-input"
+                  placeholder="Twoja opinia"
+                  required
+                  rows="4"
+                ></textarea>
+
+                <button class="form-btn" type="submit">
+                  <ion-icon name="paper-plane"></ion-icon>
+                  <span>Wyślij opinię</span>
+                </button>
+              </form>
+            </div>
+            
+            <!-- Lista istniejących opinii -->
+            <div class="lista-opinii">
+              <h4 class="h4">Opinie klientów</h4>
+              <div class="opinie-container">
+                <!-- Opinie będą ładowane dynamicznie -->
+                <p class="brak-opinii">Brak opinii. Bądź pierwszy który doda opinię!</p>
+              </div>
+            </div>
+          </section>
+        </article>
+
         <!-- Contact Section -->
-<article
-  id="contact-section"
-  class="contact"
-  data-page="contact"
-  style="display: none"
->
-  <header>
-    <h2 class="h2 article-title">Contact</h2>
-  </header>
-  
-  <section class="contact-form">
-    <h3 class="h3 form-title">Contact Form</h3>
+        <article
+          id="contact-section"
+          class="contact"
+          data-page="contact"
+          style="display: none"
+        >
+          <header>
+            <h2 class="h2 article-title">Contact</h2>
+          </header>
+          
+          <section class="contact-form">
+            <h3 class="h3 form-title">Contact Form</h3>
 
-    <form id="contactForm" class="form">
-      <div class="input-wrapper">
-        <input
-          type="text"
-          name="from_name"
-          class="form-input"
-          placeholder="Full name"
-          required
-          data-form-input
-        />
-        <input
-          type="email"
-          name="reply_to"
-          class="form-input"
-          placeholder="Email address"
-          required
-          data-form-input
-        />
-      </div>
+            <form id="contactForm" class="form">
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  name="from_name"
+                  class="form-input"
+                  placeholder="Full name"
+                  required
+                  data-form-input
+                />
+                <input
+                  type="email"
+                  name="reply_to"
+                  class="form-input"
+                  placeholder="Email address"
+                  required
+                  data-form-input
+                />
+              </div>
 
-      <textarea
-        name="message"
-        class="form-input"
-        placeholder="Your Message"
-        required
-        data-form-input
-      ></textarea>
+              <textarea
+                name="message"
+                class="form-input"
+                placeholder="Your Message"
+                required
+                data-form-input
+              ></textarea>
 
-      <button class="form-btn" type="submit" data-form-btn>
-        <ion-icon name="paper-plane"></ion-icon>
-        <span>Send Message</span>
-      </button>
-    </form>
-  </section>
-</article>
-
-<!-- Scripts -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="./assets/js/script.js"></script>
-
-<script>
-  // Initialize EmailJS with your Public Key
-  emailjs.init('9gxouQUbzS9PIbVfM');
-
-  // Contact Form Handling
-  document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contactForm');
-    const submitBtn = contactForm.querySelector('[data-form-btn]');
-
-    if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Change button state during submission
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Sending...</span>';
-
-        emailjs.sendForm('service_5a28f8g', 'template_uzpl48p', contactForm)
-          .then(function() {
-            alert('Message sent successfully!');
-            contactForm.reset();
-          })
-          .catch(function(error) {
-            console.error('Failed to send message:', error);
-            alert('Failed to send message. Please try again later.');
-          })
-          .finally(function() {
-            // Restore button state
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
-          });
-      });
-    }
-  });
-
-  // Navigation and Section Management
-  function showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll("[data-page]").forEach((section) => {
-      section.style.display = "none";
-      section.classList.remove("active");
-    });
-
-    // Show selected section
-    const activeSection = document.getElementById(sectionId + "-section");
-    if (activeSection) {
-      activeSection.style.display = "block";
-      activeSection.classList.add("active");
-    }
-
-    // Update active navbar buttons
-    document.querySelectorAll(".navbar-link").forEach((link) => {
-      link.classList.remove("active");
-    });
-    
-    const activeNavLink = document.querySelector(
-      `[data-nav-link][onclick="showSection('${sectionId}')"]`
-    );
-    if (activeNavLink) {
-      activeNavLink.classList.add("active");
-    }
-  }
-</script>
+              <button class="form-btn" type="submit" data-form-btn>
+                <ion-icon name="paper-plane"></ion-icon>
+                <span>Send Message</span>
+              </button>
+            </form>
+          </section>
+        </article>
   </body>
 </html>
