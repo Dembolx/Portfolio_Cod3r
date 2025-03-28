@@ -92,44 +92,47 @@
     const opinieForm = document.getElementById('formularz-opinii');
     if (!opinieForm) return;
 
-    // Pobierz i wyświetl opinie
+    // Pobierz i wyświetl opinie (tylko raz)
     loadOpinie();
 
     // Obsługa wysyłania nowej opinii
     opinieForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const imie = this.imie.value.trim();
-      const ocena = parseInt(document.querySelector('input[name="ocena"]:checked').value);
-      const tresc = this.tresc.value.trim();
-
-      if (!imie || !tresc) {
-        alert('Proszę wypełnić wszystkie wymagane pola!');
-        return;
-      }
-
-      const nowaOpinie = {
-        imie: imie,
-        ocena: ocena,
-        tresc: tresc,
-        data: new Date().toISOString()
-      };
-
-      try {
-        // Dodaj opinie lokalnie od razu
-        addOpinieLocally(nowaOpinie);
-        this.reset();
+        e.preventDefault();
         
-        // Zapisz do Firebase
-        const opinieRef = await saveOpinie(nowaOpinie);
-        console.log('Opinia zapisana z ID:', opinieRef.key);
-        alert('Dziękujemy za Twoją opinię!');
-      } catch (error) {
-        console.error('Błąd zapisywania opinii:', error);
-        alert('Opinia została dodana lokalnie, ale wystąpił błąd podczas zapisywania w bazie danych.');
-      }
+        const imie = this.imie.value.trim();
+        const ocena = parseInt(document.querySelector('input[name="ocena"]:checked').value);
+        const tresc = this.tresc.value.trim();
+
+        if (!imie || !tresc) {
+            alert('Proszę wypełnić wszystkie wymagane pola!');
+            return;
+        }
+
+        const nowaOpinie = {
+            imie: imie,
+            ocena: ocena,
+            tresc: tresc,
+            data: new Date().toISOString()
+        };
+
+        try {
+            // Dodaj opinie lokalnie od razu
+            addOpinieLocally(nowaOpinie);
+            this.reset();
+            
+            // Zapisz do Firebase
+            const opinieRef = await saveOpinie(nowaOpinie);
+            console.log('Opinia zapisana z ID:', opinieRef.key);
+            alert('Dziękujemy za Twoją opinię!');
+            
+            // Odśwież listę opinii (tylko raz)
+            loadOpinie();
+        } catch (error) {
+            console.error('Błąd zapisywania opinii:', error);
+            alert('Wystąpił błąd podczas zapisywania opinii.');
+        }
     });
-  }
+}
 
   // Dodawanie opinii do widoku
   function addOpinieLocally(nowaOpinie) {
@@ -173,16 +176,21 @@
   }
 
   // Ładowanie opinii z Firebase
-  function loadOpinie() {
+  // Ładowanie opinii z Firebase
+function loadOpinie() {
     const opinieRef = database.ref('opinie/');
     const opinieContainer = document.querySelector('.opinie-container');
     
     if (!opinieContainer) return;
 
+    // Ustaw flagę aby uniknąć wielokrotnego ładowania
+    if (opinieContainer.dataset.loaded === 'true') return;
+    opinieContainer.dataset.loaded = 'true';
+
     // Najpierw wyczyść kontener
     opinieContainer.innerHTML = '';
 
-    opinieRef.on('value', (snapshot) => {
+    opinieRef.once('value').then((snapshot) => {
         const opinieData = snapshot.val();
         
         if (!opinieData || Object.keys(opinieData).length === 0) {
@@ -768,20 +776,22 @@
                 </div>
                 
                 <div class="ocena-wrapper">
-                  <label>Ocena:</label>
-                  <!-- W pliku HTML -->
+                  <label class="h4">Ocena:</label>
                   <div class="gwiazdki-oceny">
-                      <input type="radio" id="gwiazdka5" name="ocena" value="5">
-                      <label for="gwiazdka5">★</label>
-                      <input type="radio" id="gwiazdka4" name="ocena" value="4">
-                      <label for="gwiazdka4">★</label>
-                      <input type="radio" id="gwiazdka3" name="ocena" value="3">
-                      <label for="gwiazdka3">★</label>
-                      <input type="radio" id="gwiazdka2" name="ocena" value="2">
-                      <label for="gwiazdka2">★</label>
-                      <input type="radio" id="gwiazdka1" name="ocena" value="1" checked>
-                      <label for="gwiazdka1">★</label>
-                  </div>
+                  <input type="radio" id="gwiazdka1" name="ocena" value="5" class="star-1" checked>
+                  <label for="gwiazdka1" class="star-label">★</label>
+                  
+                  <input type="radio" id="gwiazdka2" name="ocena" value="4" class="star-2">
+                  <label for="gwiazdka2" class="star-label">★</label>
+                  
+                  <input type="radio" id="gwiazdka3" name="ocena" value="3" class="star-3">
+                  <label for="gwiazdka3" class="star-label">★</label>
+                  
+                  <input type="radio" id="gwiazdka4" name="ocena" value="2" class="star-4">
+                  <label for="gwiazdka4" class="star-label">★</label>
+                  
+                  <input type="radio" id="gwiazdka5" name="ocena" value="1" class="star-5">
+                  <label for="gwiazdka5" class="star-label">★</label>
                 </div>
                 
                 <textarea

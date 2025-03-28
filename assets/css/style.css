@@ -1525,6 +1525,11 @@ textarea.form-input::-webkit-resizer {
     margin-bottom: 25px;
   }
 
+  .ocena-wrapper > label
+  {
+    color: azure;
+  }
+
   /* Formularz dodawania opinii */
   .dodaj-opinie {
     background: var(--border-gradient-onyx);
@@ -1566,10 +1571,11 @@ textarea.form-input::-webkit-resizer {
   }
 
   /* W pliku style.css */
-  .gwiazdki-oceny {
+    .gwiazdki-oceny {
     display: flex;
     margin: 15px 0 25px;
-    flex-direction: row; /* Dodaj to aby upewnić się, że są w poziomie */
+    flex-direction: row-reverse;
+    justify-content: flex-end;
   }
 
   .gwiazdki-oceny input[type="radio"] {
@@ -1583,27 +1589,27 @@ textarea.form-input::-webkit-resizer {
     transition: var(--transition-1);
     margin-right: 10px;
     text-shadow: var(--shadow-1);
-    order: 1; /* Upewniamy się, że gwiazdki są w dobrej kolejności */
   }
 
-  /* Zmieniamy kierunek efektu hover */
-  .gwiazdki-oceny input[type="radio"]:checked ~ label,
+  /* Domyślne zaznaczenie wszystkich gwiazdek */
+  .gwiazdki-oceny input:checked ~ label {
+    color: var(--orange-yellow-crayola);
+  }
+
+  /* Hover - podświetlenie odpowiedniej ilości gwiazdek */
+  .gwiazdki-oceny label:hover,
   .gwiazdki-oceny label:hover ~ label {
-    color: var(--onyx); /* Domyślny kolor dla gwiazdek po prawej */
+    color: var(--orange-yellow-crayola);
   }
 
-  .gwiazdki-oceny input[type="radio"]:checked + label,
-  .gwiazdki-oceny label:hover {
-    color: var(
-      --orange-yellow-crayola
-    ); /* Podświetlona gwiazdka i te po lewej */
+  /* Kliknięcie - tylko wybrane gwiazdki się podświetlają */
+  .gwiazdki-oceny input:checked ~ label {
+    color: var(--onyx);
   }
-
-  .gwiazdki-oceny input[type="radio"]:checked + label {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 8px hsla(45, 100%, 72%, 0.4));
+  .gwiazdki-oceny input:checked + label,
+  .gwiazdki-oceny input:checked + label ~ label {
+    color: var(--orange-yellow-crayola);
   }
-
   /* Lista opinii */
   .lista-opinii h4 {
     color: var(--white-2);
