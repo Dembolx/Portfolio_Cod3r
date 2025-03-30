@@ -498,3 +498,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
+
+// ------------------------- Obsługa animacji scrollowania -------------------------
+function animateOnScroll() {
+  const elements = document.querySelectorAll(".scroll-animate");
+  const windowHeight = window.innerHeight;
+  const triggerOffset = 100;
+
+  elements.forEach((element) => {
+    const elementPosition = element.getBoundingClientRect().top;
+
+    if (elementPosition < windowHeight - triggerOffset) {
+      element.classList.add("animated");
+    }
+  });
+}
+
+// Inicjalizacja
+window.addEventListener("scroll", animateOnScroll);
+document.addEventListener("DOMContentLoaded", animateOnScroll);
