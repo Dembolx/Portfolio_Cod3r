@@ -432,7 +432,7 @@
           </section>
         </article>
 
-         <!-- Sekcja Opinie -->
+        <!-- Sekcja Opinie -->
         <article id="opinie-section" class="opinie" data-page="opinie" style="display: none">
           <header>
             <h2 class="h2 article-title">Opinie klientów</h2>
@@ -465,20 +465,21 @@
                 <div class="ocena-wrapper">
                   <label class="h4">Ocena:</label>
                   <div class="gwiazdki-oceny">
-                  <input type="radio" id="gwiazdka1" name="ocena" value="5" class="star-1" checked>
-                  <label for="gwiazdka1" class="star-label">★</label>
-                  
-                  <input type="radio" id="gwiazdka2" name="ocena" value="4" class="star-2">
-                  <label for="gwiazdka2" class="star-label">★</label>
-                  
-                  <input type="radio" id="gwiazdka3" name="ocena" value="3" class="star-3">
-                  <label for="gwiazdka3" class="star-label">★</label>
-                  
-                  <input type="radio" id="gwiazdka4" name="ocena" value="2" class="star-4">
-                  <label for="gwiazdka4" class="star-label">★</label>
-                  
-                  <input type="radio" id="gwiazdka5" name="ocena" value="1" class="star-5">
-                  <label for="gwiazdka5" class="star-label">★</label>
+                    <input type="radio" id="gwiazdka5" name="ocena" value="5" class="star-5" checked>
+                    <label for="gwiazdka5" class="star-label">★</label>
+                    
+                    <input type="radio" id="gwiazdka4" name="ocena" value="4" class="star-4">
+                    <label for="gwiazdka4" class="star-label">★</label>
+                    
+                    <input type="radio" id="gwiazdka3" name="ocena" value="3" class="star-3">
+                    <label for="gwiazdka3" class="star-label">★</label>
+                    
+                    <input type="radio" id="gwiazdka2" name="ocena" value="2" class="star-2">
+                    <label for="gwiazdka2" class="star-label">★</label>
+                    
+                    <input type="radio" id="gwiazdka1" name="ocena" value="1" class="star-1">
+                    <label for="gwiazdka1" class="star-label">★</label>
+                  </div>
                 </div>
                 
                 <textarea
@@ -500,7 +501,27 @@
             <div class="lista-opinii">
               <h4 class="h4">Opinie klientów</h4>
               <div class="opinie-container">
-                <!-- Opinie będą ładowane dynamicznie -->
+                <!-- Przykładowa opinia -->
+                <div class="opinie-item">
+                  <div class="opinie-item-header">
+                    <span class="autor">Justyna</span>
+                    <span class="data">28 marca 2025</span>
+                  </div>
+                  <div class="ocena">★★★★★</div>
+                  <div class="tresc">Szybko, sprawnie i na temat</div>
+                </div>
+                
+                <!-- Druga przykładowa opinia -->
+                <div class="opinie-item">
+                  <div class="opinie-item-header">
+                    <span class="autor">Rafał</span>
+                    <span class="data">28 marca 2025</span>
+                  </div>
+                  <div class="ocena">★★★★☆</div>
+                  <div class="tresc">Miła obsługa</div>
+                </div>
+                
+                <!-- Tutaj będą ładowane dynamicznie opinie z Firebase -->
                 <p class="brak-opinii">Brak opinii. Bądź pierwszy który doda opinię!</p>
               </div>
             </div>

@@ -1,3 +1,5 @@
+@import url(opinie_style.css);
+
 /*-----------------------------------*\
   #style.css
 \*-----------------------------------*/
@@ -1513,395 +1515,133 @@ textarea.form-input::-webkit-resizer {
     padding: 30px;
   }
 
- /*-----------------------------------*\
+  /*-----------------------------------*\
   Portfolio Filters
 \*-----------------------------------*/
 
-.filter-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-}
-
-.filter-item button {
-  color: var(--white);
-  background: transparent;
-  text-transform: capitalize;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius-md);
-  font-weight: var(--weight-500);
-  transition: var(--transition-timing);
-}
-
-.filter-item button.active,
-.filter-item button:hover {
-  background: var(--white);
-  color: var(--raisin-black-1);
-}
-
-.filter-select-box {
-  position: relative;
-  display: none;
-}
-
-.filter-select {
-  background: var(--white);
-  color: var(--raisin-black-1);
-  padding: 1rem;
-  border-radius: var(--border-radius-md);
-  font-weight: var(--weight-500);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  cursor: pointer;
-}
-
-.select-icon {
-  transition: var(--transition-timing);
-}
-
-.filter-select.active .select-icon {
-  transform: rotate(180deg);
-}
-
-.select-list {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  width: 100%;
-  background: var(--white);
-  color: var(--raisin-black-1);
-  padding: 1rem;
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-1);
-  z-index: 2;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: var(--transition-timing);
-}
-
-.filter-select.active + .select-list {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-}
-
-.select-item button {
-  background: transparent;
-  color: var(--raisin-black-1);
-  text-transform: capitalize;
-  width: 100%;
-  padding: 0.5rem 0;
-  text-align: left;
-  transition: var(--transition-timing);
-}
-
-.select-item button:hover {
-  color: var(--orange-yellow-crayola);
-}
-
-/* Projects */
-.project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.project-item {
-  display: none;
-}
-
-.project-item.active {
-  display: block;
-  animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Responsywność */
-@media (max-width: 768px) {
   .filter-list {
-    display: none;
-  }
-  
-  .filter-select-box {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 3rem;
   }
-}
 
-  /*-----------------------------------*\
-  #OPINIE
-\*-----------------------------------*/
-
-  .opinie {
-    padding: 30px;
+  .filter-item button {
+    color: var(--white);
+    background: transparent;
+    text-transform: capitalize;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-md);
+    font-weight: var(--weight-500);
+    transition: var(--transition-timing);
   }
 
-  .opinie .article-title {
-    margin-bottom: 25px;
+  .filter-item button.active,
+  .filter-item button:hover {
+    background: var(--white);
+    color: var(--raisin-black-1);
   }
 
-  .ocena-wrapper > label
-  {
-    color: azure;
-  }
-
-  /* Formularz dodawania opinii */
-  .dodaj-opinie {
-    background: var(--border-gradient-onyx);
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-2);
+  .filter-select-box {
     position: relative;
-    z-index: 1;
-  }
-
-  .dodaj-opinie::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    background: var(--bg-gradient-jet);
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  .dodaj-opinie h4 {
-    color: var(--white-2);
-    font-size: var(--fs-4);
-    font-weight: var(--fw-500);
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-  }
-
-  .dodaj-opinie h4::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--text-gradient-yellow);
-    border-radius: 3px;
-  }
-
-  /* W pliku style.css */
-    .gwiazdki-oceny {
-    display: flex;
-    margin: 15px 0 25px;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-  }
-
-  .gwiazdki-oceny input[type="radio"] {
     display: none;
   }
 
-  .gwiazdki-oceny label {
-    font-size: 24px;
-    color: var(--onyx);
-    cursor: pointer;
-    transition: var(--transition-1);
-    margin-right: 10px;
-    text-shadow: var(--shadow-1);
-  }
-
-  /* Domyślne zaznaczenie wszystkich gwiazdek */
-  .gwiazdki-oceny input:checked ~ label {
-    color: var(--orange-yellow-crayola);
-  }
-
-  /* Hover - podświetlenie odpowiedniej ilości gwiazdek */
-  .gwiazdki-oceny label:hover,
-  .gwiazdki-oceny label:hover ~ label {
-    color: var(--orange-yellow-crayola);
-  }
-
-  /* Kliknięcie - tylko wybrane gwiazdki się podświetlają */
-  .gwiazdki-oceny input:checked ~ label {
-    color: var(--onyx);
-  }
-  .gwiazdki-oceny input:checked + label,
-  .gwiazdki-oceny input:checked + label ~ label {
-    color: var(--orange-yellow-crayola);
-  }
-  /* Lista opinii */
-  .lista-opinii h4 {
-    color: var(--white-2);
-    font-size: var(--fs-4);
-    font-weight: var(--fw-500);
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-  }
-
-  .lista-opinii h4::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--text-gradient-yellow);
-    border-radius: 3px;
-  }
-
-  .opinie-container {
-    margin-top: 20px;
-  }
-
-  .opinie-item {
-    position: relative;
-    background: var(--border-gradient-onyx);
-    padding: 25px;
-    border-radius: 14px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow-2);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s forwards;
-    transition: var(--transition-1);
-    z-index: 1;
-    border-left: 4px solid var(--orange-yellow-crayola);
-  }
-
-  .opinie-item::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    background: var(--bg-gradient-jet);
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  .opinie-item:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-3);
-    border-left-color: var(--vegas-gold);
-  }
-
-  .opinie-item .naglowek {
+  .filter-select {
+    background: var(--white);
+    color: var(--raisin-black-1);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    font-weight: var(--weight-500);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
   }
 
-  .opinie-item .autor {
-    color: var(--white-2);
-    font-size: var(--fs-5);
-    font-weight: var(--fw-500);
+  .select-icon {
+    transition: var(--transition-timing);
   }
 
-  .opinie-item .data {
-    color: var(--light-gray-70);
-    font-size: var(--fs-7);
-    font-weight: var(--fw-300);
+  .filter-select.active .select-icon {
+    transform: rotate(180deg);
   }
 
-  .opinie-item .ocena {
-    color: var(--orange-yellow-crayola);
-    font-size: var(--fs-5);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-
-  .opinie-item .tresc {
-    color: var(--light-gray);
-    font-size: var(--fs-6);
-    font-weight: var(--fw-300);
-    line-height: 1.6;
-  }
-
-  .brak-opinii {
-    text-align: center;
-    color: var(--light-gray-70);
-    font-style: italic;
-    padding: 30px;
-    background: var(--border-gradient-onyx);
-    border-radius: 14px;
-    box-shadow: var(--shadow-1);
-    position: relative;
-    z-index: 1;
-  }
-
-  .brak-opinii::before {
-    content: "";
+  .select-list {
     position: absolute;
-    inset: 1px;
-    background: var(--bg-gradient-jet);
-    border-radius: inherit;
-    z-index: -1;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 100%;
+    background: var(--white);
+    color: var(--raisin-black-1);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-1);
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: var(--transition-timing);
   }
 
-  /* Animacje */
-  @keyframes fadeInUp {
+  .filter-select.active + .select-list {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  .select-item button {
+    background: transparent;
+    color: var(--raisin-black-1);
+    text-transform: capitalize;
+    width: 100%;
+    padding: 0.5rem 0;
+    text-align: left;
+    transition: var(--transition-timing);
+  }
+
+  .select-item button:hover {
+    color: var(--orange-yellow-crayola);
+  }
+
+  /* Projects */
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .project-item {
+    display: none;
+  }
+
+  .project-item.active {
+    display: block;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
-  }
-
-  .opinie-item:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .opinie-item:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .opinie-item:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  .opinie-item:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  .opinie-item:nth-child(5) {
-    animation-delay: 0.5s;
   }
 
   /* Responsywność */
-  @media (min-width: 580px) {
-    .opinie-item {
-      padding: 30px;
+  @media (max-width: 768px) {
+    .filter-list {
+      display: none;
     }
 
-    .opinie-item .autor {
-      font-size: var(--fs-4);
-    }
-
-    .opinie-item .ocena {
-      font-size: var(--fs-4);
+    .filter-select-box {
+      display: block;
+      margin-bottom: 3rem;
     }
   }
-
-  @media (min-width: 768px) {
-    .dodaj-opinie {
-      padding: 40px;
-    }
-
-    .opinie-item {
-      padding: 35px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .opinie-item {
-      padding: 40px;
-    }
-  }
-
   /* Cos */
   .service-icon-box {
     margin-bottom: 0;

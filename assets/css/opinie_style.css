@@ -1,0 +1,425 @@
+/*-----------------------------------*\
+  #OPINIE - MOBILE FIRST
+\*-----------------------------------*/
+
+.opinie {
+  padding: 15px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.opinie .article-title {
+  margin-bottom: 15px;
+  font-size: var(--fs-2);
+  color: var(--white-2);
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.opinie .article-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--text-gradient-yellow);
+  border-radius: 3px;
+}
+
+.opinie-title {
+  font-size: var(--fs-3);
+  margin-bottom: 20px;
+  color: var(--white-2);
+  font-weight: var(--fw-500);
+}
+
+/* Formularz */
+.dodaj-opinie {
+  background: var(--border-gradient-onyx);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  box-shadow: var(--shadow-2);
+  position: relative;
+  z-index: 1;
+}
+
+.dodaj-opinie::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.dodaj-opinie h4 {
+  color: var(--white-2);
+  font-size: var(--fs-4);
+  font-weight: var(--fw-500);
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.dodaj-opinie h4::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--text-gradient-yellow);
+  border-radius: 2px;
+}
+
+/* Inputy */
+.formularz-opinii .input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.formularz-opinii .form-input {
+  color: var(--white-2);
+  font-size: var(--fs-6);
+  padding: 12px 15px;
+  border: 1px solid var(--jet);
+  border-radius: 12px;
+  background: var(--eerie-black-2);
+  transition: var(--transition-1);
+}
+
+.formularz-opinii .form-input:focus {
+  border-color: var(--orange-yellow-crayola);
+  box-shadow: 0 0 0 2px rgba(233, 180, 76, 0.2);
+}
+
+/* Ocena gwiazdki */
+.ocena-wrapper {
+  margin: 15px 0;
+}
+
+.ocena-wrapper > label {
+  display: block;
+  color: var(--white-2);
+  margin-bottom: 10px;
+  font-size: var(--fs-6);
+}
+
+.gwiazdki-oceny {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gwiazdki-oceny input[type="radio"] {
+  display: none;
+}
+
+.gwiazdki-oceny label {
+  font-size: 24px;
+  color: var(--onyx);
+  cursor: pointer;
+  transition: var(--transition-1);
+  flex: 1;
+  text-align: center;
+  padding: 5px;
+}
+
+.gwiazdki-oceny input:checked ~ label {
+  color: var(--orange-yellow-crayola);
+  transform: scale(1.1);
+}
+
+.gwiazdki-oceny label:hover,
+.gwiazdki-oceny label:hover ~ label {
+  color: var(--light-gray-70);
+}
+
+.gwiazdki-oceny input:checked ~ label,
+.gwiazdki-oceny input:checked ~ label:hover {
+  color: var(--orange-yellow-crayola);
+}
+
+/* Przycisk */
+.form-btn {
+  background: var(--border-gradient-onyx);
+  color: var(--orange-yellow-crayola);
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: var(--fs-6);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-1);
+  width: 100%;
+  justify-content: center;
+}
+
+.form-btn:hover {
+  background: var(--bg-gradient-yellow-1);
+  color: var(--smoky-black);
+}
+
+.form-btn ion-icon {
+  font-size: 18px;
+}
+
+/* Lista opinii */
+.lista-opinii h4 {
+  font-size: var(--fs-4);
+  color: var(--white-2);
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.lista-opinii h4::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--text-gradient-yellow);
+  border-radius: 2px;
+}
+
+.opinie-container {
+  display: grid;
+  gap: 15px;
+}
+
+.opinie-item {
+  background: var(--border-gradient-onyx);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+  box-shadow: var(--shadow-1);
+  border-left: 4px solid var(--orange-yellow-crayola);
+}
+
+.opinie-item::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.opinie-item .opinie-item-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.opinie-item .autor {
+  color: var(--white-2);
+  font-size: var(--fs-5);
+  font-weight: var(--fw-500);
+  margin-bottom: 5px;
+}
+
+.opinie-item .data {
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+}
+
+.opinie-item .ocena {
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-5);
+  margin: 8px 0;
+  letter-spacing: 2px;
+}
+
+.opinie-item .tresc {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  line-height: 1.5;
+}
+
+.brak-opinii {
+  color: var(--light-gray-70);
+  font-style: italic;
+  text-align: center;
+  padding: 30px;
+  background: var(--border-gradient-onyx);
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.brak-opinii::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Animacje */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efekt pojawiania się kolejnych opinii */
+.opinie-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.opinie-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.opinie-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.opinie-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.opinie-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/*-----------------------------------*\
+  #MEDIA QUERIES - TABLET
+\*-----------------------------------*/
+
+@media (min-width: 580px) {
+  .opinie {
+    padding: 20px;
+  }
+
+  .formularz-opinii .input-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gwiazdki-oceny {
+    justify-content: flex-start;
+    gap: 5px;
+  }
+
+  .gwiazdki-oceny label {
+    flex: 0;
+    font-size: 28px;
+  }
+
+  .opinie-item .opinie-item-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .opinie-item .data {
+    text-align: right;
+  }
+}
+
+/*-----------------------------------*\
+  #MEDIA QUERIES - DESKTOP
+\*-----------------------------------*/
+
+@media (min-width: 768px) {
+  .opinie {
+    padding: 25px;
+  }
+
+  .dodaj-opinie {
+    padding: 25px;
+  }
+
+  .opinie-item {
+    padding: 20px;
+    transition: var(--transition-1);
+  }
+
+  .opinie-item:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: var(--shadow-3);
+    border-left-color: var(--vegas-gold);
+  }
+
+  .form-btn {
+    width: auto;
+    margin-left: auto;
+  }
+
+  .opinie-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*-----------------------------------*\
+  #LOADER
+\*-----------------------------------*/
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--jet);
+  border-top: 4px solid var(--orange-yellow-crayola);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*-----------------------------------*\
+  #TOAST MESSAGES
+\*-----------------------------------*/
+
+.toast-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--border-gradient-onyx);
+  color: var(--white-2);
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-3);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  max-width: 90%;
+  text-align: center;
+  font-size: var(--fs-6);
+}
+
+.toast-message.show {
+  bottom: 30px;
+  opacity: 1;
+}
+
+.toast-message.success {
+  border-left: 4px solid var(--orange-yellow-crayola);
+}
+
+.toast-message.error {
+  border-left: 4px solid var(--bittersweet-shimmer);
+}
