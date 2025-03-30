@@ -178,6 +178,11 @@ body {
   #REUSED STYLE
 \*-----------------------------------*/
 
+.icon-box > img {
+  width: 30px;
+  height: 30px;
+}
+
 .sidebar,
 article {
   background: var(--eerie-black-2);
