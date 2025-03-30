@@ -111,7 +111,10 @@
 
 .gwiazdki-oceny {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row-reverse; /* Odwraca kolejność elementów */
+  float: left; /* Wyrównuje do prawej strony */
+  gap: 5px;
+  margin: 10px 0;
 }
 
 .gwiazdki-oceny input[type="radio"] {
@@ -119,18 +122,16 @@
 }
 
 .gwiazdki-oceny label {
-  font-size: 24px;
   color: var(--onyx);
+  font-size: 24px;
   cursor: pointer;
   transition: var(--transition-1);
-  flex: 1;
-  text-align: center;
-  padding: 5px;
+  position: relative;
 }
 
+/* Nowe style dla odwróconej kolejności */
 .gwiazdki-oceny input:checked ~ label {
   color: var(--orange-yellow-crayola);
-  transform: scale(1.1);
 }
 
 .gwiazdki-oceny label:hover,
@@ -140,6 +141,15 @@
 
 .gwiazdki-oceny input:checked ~ label,
 .gwiazdki-oceny input:checked ~ label:hover {
+  color: var(--orange-yellow-crayola);
+}
+
+/* Domyślna wartość (5 gwiazdek) */
+.gwiazdki-oceny input.star-5:checked ~ label:nth-child(2),
+.gwiazdki-oceny input.star-5:checked ~ label:nth-child(4),
+.gwiazdki-oceny input.star-5:checked ~ label:nth-child(6),
+.gwiazdki-oceny input.star-5:checked ~ label:nth-child(8),
+.gwiazdki-oceny input.star-5:checked ~ label:nth-child(10) {
   color: var(--orange-yellow-crayola);
 }
 
