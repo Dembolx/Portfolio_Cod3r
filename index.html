@@ -176,7 +176,6 @@
   }
 
   // Ładowanie opinii z Firebase
-  // Ładowanie opinii z Firebase
 function loadOpinie() {
     const opinieRef = database.ref('opinie/');
     const opinieContainer = document.querySelector('.opinie-container');
@@ -261,6 +260,98 @@ function loadOpinie() {
       activeNavLink.classList.add("active");
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+  initPortfolioFilters();
+});
+
+function initPortfolioFilters() {
+  const filterButtons = document.querySelectorAll('[data-filter-btn]');
+  const selectItems = document.querySelectorAll('[data-select-item]');
+  const projectItems = document.querySelectorAll('[data-filter-item]');
+  const selectValue = document.querySelector('[data-selecct-value]');
+  const filterSelect = document.querySelector('[data-select]');
+  const selectList = document.querySelector('.select-list');
+
+  // Mapowanie tekstu przycisków na wartości data-category
+  const categoryMap = {
+    'all': 'all',
+    'web design': 'web-design',
+    'web development': 'web-development'
+  };
+
+  // Filtrowanie projektów
+  function filterProjects(category) {
+    projectItems.forEach(item => {
+      if (category === 'all' || item.dataset.category === category) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+
+  // Obsługa przycisków filtrowania
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Usuń aktywną klasę ze wszystkich przycisków
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      // Dodaj aktywną klasę do klikniętego przycisku
+      this.classList.add('active');
+      
+      // Pobierz odpowiednią kategorię
+      const buttonText = this.textContent.toLowerCase();
+      const filterValue = categoryMap[buttonText] || 'all';
+      
+      // Filtruj projekty
+      filterProjects(filterValue);
+      
+      // Aktualizuj wartość selecta
+      selectValue.textContent = this.textContent;
+    });
+  });
+
+  // Obsługa selecta (dla wersji mobilnej)
+  selectItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Zamknij listę selecta
+      filterSelect.classList.remove('active');
+      selectList.classList.remove('active');
+      
+      // Pobierz odpowiednią kategorię
+      const buttonText = this.textContent.toLowerCase();
+      const filterValue = categoryMap[buttonText] || 'all';
+      
+      // Filtruj projekty
+      filterProjects(filterValue);
+      
+      // Aktualizuj wartość selecta
+      selectValue.textContent = this.textContent;
+      
+      // Aktualizuj aktywny przycisk
+      filterButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase() === this.textContent.toLowerCase()) {
+          btn.classList.add('active');
+        }
+      });
+    });
+  });
+
+  // Toggle select list
+  filterSelect.addEventListener('click', function() {
+    this.classList.toggle('active');
+    selectList.classList.toggle('active');
+  });
+
+  // Zamknij selecta po kliknięciu poza nim
+  document.addEventListener('click', function(e) {
+    if (!filterSelect.contains(e.target)) {
+      filterSelect.classList.remove('active');
+      selectList.classList.remove('active');
+    }
+  });
+}
 </script>
   </head>
 
@@ -574,176 +665,92 @@ function loadOpinie() {
             </div>
 
             <ul class="project-list">
-              <!-- Kawiarenka -->
+  <!-- Kawiarenka -->
+  <li class="project-item active" data-filter-item data-category="web-design">
+    <a href="https://dembolx.github.io/Kawiarnia_website/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/Kawiarnua_website.png" alt="orizon" loading="lazy">
+      </figure>
+      <h3 class="project-title">Kawiarenka</h3>
+      <p class="project-category">Web design</p>
+    </a>
+  </li>
 
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="web design"
-              >
-                <a
-                  href="https://dembolx.github.io/Kawiarnia_website/"
-                  target="_blank"
-                >
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
+  <!-- Pizzeria -->
+  <li class="project-item active" data-filter-item data-category="web-design">
+    <a href="https://dembolx.github.io/Pizzeria_Website/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/dla_restauracji.png" alt="fundo" loading="lazy">
+      </figure>
+      <h3 class="project-title">Pizzeria</h3>
+      <p class="project-category">Web design</p>
+    </a>
+  </li>
 
-                    <img
-                      src="assets/images/Kawiarnua_website.png"
-                      alt="orizon"
-                      loading="lazy"
-                    />
-                  </figure>
+  <!-- 3D Model -->
+  <li class="project-item active" data-filter-item data-category="web-development">
+    <a href="https://dembolx.github.io/3D_Model_Website/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/3D_Model.png" alt="dsm." loading="lazy">
+      </figure>
+      <h3 class="project-title">3D Model Website</h3>
+      <p class="project-category">Web development</p>
+    </a>
+  </li>
 
-                  <h3 class="project-title">Kawiarenka</h3>
+  <!-- Wizualizacja Danych -->
+  <li class="project-item active" data-filter-item data-category="web-development">
+    <a href="https://dembolx.github.io/Wizualizacja_Danych/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/wizu_danych.png" alt="metaspark" loading="lazy">
+      </figure>
+      <h3 class="project-title">Wizualizacja Danych</h3>
+      <p class="project-category">Web development</p>
+    </a>
+  </li>
 
-                  <p class="project-category">Web design</p>
-                </a>
-              </li>
+  <!-- Retro Website -->
+  <li class="project-item active" data-filter-item data-category="web-design">
+    <a href="https://dembolx.github.io/Retro_Website/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/Retro_Website.png" alt="summary" loading="lazy">
+      </figure>
+      <h3 class="project-title">Retro Style</h3>
+      <p class="project-category">Web design</p>
+    </a>
+  </li>
 
-              <!-- Pizzeria -->
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="web design"
-              >
-                <a
-                  href=" https://dembolx.github.io/Pizzeria_Website/"
-                  target="_blank"
-                >
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
-
-                    <img
-                      src="assets/images/dla_restauracji.png"
-                      alt="fundo"
-                      loading="lazy"
-                    />
-                  </figure>
-
-                  <h3 class="project-title">Pizzeria</h3>
-
-                  <p class="project-category">Web design</p>
-                </a>
-              </li>
-
-              <!-- 3D Model -->
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="web design"
-              >
-                <a
-                  href="https://dembolx.github.io/3D_Model_Website/"
-                  target="_blank"
-                >
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
-
-                    <img
-                      src="assets/images/3D_Model.png"
-                      alt="dsm."
-                      loading="lazy"
-                    />
-                  </figure>
-
-                  <h3 class="project-title">3D Model Website</h3>
-
-                  <p class="project-category">Web development</p>
-                </a>
-              </li>
-
-              <!-- Wizualizacja Danych -->
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="web design"
-              >
-                <a
-                  href="https://dembolx.github.io/Wizualizacja_Danych/"
-                  target="_blank"
-                >
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
-
-                    <img
-                      src="assets/images/wizu_danych.png"
-                      alt="metaspark"
-                      loading="lazy"
-                    />
-                  </figure>
-
-                  <h3 class="project-title">Wizualizacja Danych</h3>
-
-                  <p class="project-category">Web development</p>
-                </a>
-              </li>
-
-              <!-- Retro Website -->
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="web development"
-              >
-                <a
-                  href=" https://dembolx.github.io/Retro_Website/"
-                  target="_blank"
-                >
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
-
-                    <img
-                      src="assets/images/Retro_Website.png"
-                      alt="summary"
-                      loading="lazy"
-                    />
-                  </figure>
-
-                  <h3 class="project-title">Retro Style</h3>
-
-                  <p class="project-category">Web design</p>
-                </a>
-              </li>
-
-              <!-- One Page -->
-              <li
-                class="project-item active"
-                data-filter-item
-                data-category="applications"
-              >
-                <a href="https://dembolx.github.io/One_Page/" target="_blank">
-                  <figure class="project-img">
-                    <div class="project-item-icon-box">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </div>
-
-                    <img
-                      src="assets/images/Future_Design.png"
-                      alt="task manager"
-                      loading="lazy"
-                    />
-                  </figure>
-
-                  <h3 class="project-title">One Page</h3>
-
-                  <p class="project-category">Web development</p>
-                </a>
-              </li>
-            </ul>
+  <!-- One Page -->
+  <li class="project-item active" data-filter-item data-category="web-development">
+    <a href="https://dembolx.github.io/One_Page/" target="_blank">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="assets/images/Future_Design.png" alt="task manager" loading="lazy">
+      </figure>
+      <h3 class="project-title">One Page</h3>
+      <p class="project-category">Web development</p>
+    </a>
+  </li>
+</ul>
           </section>
         </article>
-
-
 
          <!-- Sekcja Opinie -->
         <article id="opinie-section" class="opinie" data-page="opinie" style="display: none">

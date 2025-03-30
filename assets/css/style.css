@@ -1513,6 +1513,130 @@ textarea.form-input::-webkit-resizer {
     padding: 30px;
   }
 
+ /*-----------------------------------*\
+  Portfolio Filters
+\*-----------------------------------*/
+
+.filter-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.filter-item button {
+  color: var(--white);
+  background: transparent;
+  text-transform: capitalize;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  font-weight: var(--weight-500);
+  transition: var(--transition-timing);
+}
+
+.filter-item button.active,
+.filter-item button:hover {
+  background: var(--white);
+  color: var(--raisin-black-1);
+}
+
+.filter-select-box {
+  position: relative;
+  display: none;
+}
+
+.filter-select {
+  background: var(--white);
+  color: var(--raisin-black-1);
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
+  font-weight: var(--weight-500);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.select-icon {
+  transition: var(--transition-timing);
+}
+
+.filter-select.active .select-icon {
+  transform: rotate(180deg);
+}
+
+.select-list {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  color: var(--raisin-black-1);
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-1);
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: var(--transition-timing);
+}
+
+.filter-select.active + .select-list {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.select-item button {
+  background: transparent;
+  color: var(--raisin-black-1);
+  text-transform: capitalize;
+  width: 100%;
+  padding: 0.5rem 0;
+  text-align: left;
+  transition: var(--transition-timing);
+}
+
+.select-item button:hover {
+  color: var(--orange-yellow-crayola);
+}
+
+/* Projects */
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-item {
+  display: none;
+}
+
+.project-item.active {
+  display: block;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .filter-list {
+    display: none;
+  }
+  
+  .filter-select-box {
+    display: block;
+    margin-bottom: 3rem;
+  }
+}
+
   /*-----------------------------------*\
   #OPINIE
 \*-----------------------------------*/
