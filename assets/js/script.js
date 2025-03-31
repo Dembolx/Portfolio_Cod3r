@@ -219,83 +219,114 @@ function initContactForm() {
 
 // ------------------------- FILTROWANIE PORTFOLIO -------------------------
 
-/**
- * Inicjalizacja filtrów portfolio
- */
 function initPortfolioFilters() {
+  // Pobranie elementów DOM
   const filterButtons = document.querySelectorAll("[data-filter-btn]");
   const selectItems = document.querySelectorAll("[data-select-item]");
   const projectItems = document.querySelectorAll("[data-filter-item]");
-  const selectValue = document.querySelector("[data-selecct-value]");
+  const selectValue = document.querySelector("[data-selecct-value]"); // Poprawione data-select-value
   const filterSelect = document.querySelector("[data-select]");
   const selectList = document.querySelector(".select-list");
 
+  // Mapa kategorii dla spójności
   const categoryMap = {
     all: "all",
     "web design": "web-design",
     "web development": "web-development",
   };
 
+  // Funkcja filtrowania projektów
   function filterProjects(category) {
     projectItems.forEach((item) => {
-      if (category === "all" || item.dataset.category === category) {
-        item.classList.add("active");
+      const itemCategory = item.dataset.category;
+
+      if (category === "all" || itemCategory === category) {
+        item.style.display = "block";
+        setTimeout(() => {
+          item.classList.add("active");
+        }, 10);
       } else {
+        item.style.display = "none";
         item.classList.remove("active");
       }
     });
   }
 
-  // Obsługa przycisków filtrowania
+  // Funkcja aktualizacji UI
+  function updateUI(activeCategory, displayText) {
+    // Aktualizacja przycisków (desktop)
+    filterButtons.forEach((btn) => {
+      const btnCategory = categoryMap[btn.textContent.toLowerCase()];
+      btn.classList.toggle("active", btnCategory === activeCategory);
+    });
+
+    // Aktualizacja selecta (mobile)
+    selectValue.textContent = displayText;
+  }
+
+  // Obsługa przycisków (desktop)
   filterButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      filterButtons.forEach((btn) => btn.classList.remove("active"));
-      this.classList.add("active");
-
       const buttonText = this.textContent.toLowerCase();
-      const filterValue = categoryMap[buttonText] || "all";
+      const filterValue = categoryMap[buttonText];
 
+      updateUI(filterValue, this.textContent);
       filterProjects(filterValue);
-      selectValue.textContent = this.textContent;
     });
   });
 
   // Obsługa selecta (mobile)
+  filterSelect.addEventListener("click", function (e) {
+    e.stopPropagation();
+    this.classList.toggle("active");
+    selectList.style.opacity = this.classList.contains("active") ? "1" : "0";
+    selectList.style.visibility = this.classList.contains("active")
+      ? "visible"
+      : "hidden";
+    selectList.style.pointerEvents = this.classList.contains("active")
+      ? "all"
+      : "none";
+  });
+
+  // Obsługa wyboru w select (mobile)
   selectItems.forEach((item) => {
-    item.addEventListener("click", function () {
+    item.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      const itemText = this.textContent.toLowerCase();
+      const filterValue = categoryMap[itemText];
+
+      // Zamknij select
       filterSelect.classList.remove("active");
-      selectList.classList.remove("active");
+      selectList.style.opacity = "0";
+      selectList.style.visibility = "hidden";
+      selectList.style.pointerEvents = "none";
 
-      const buttonText = this.textContent.toLowerCase();
-      const filterValue = categoryMap[buttonText] || "all";
-
+      // Aktualizuj UI i filtruj
+      updateUI(filterValue, this.textContent);
       filterProjects(filterValue);
-      selectValue.textContent = this.textContent;
-
-      filterButtons.forEach((btn) => {
-        btn.classList.remove("active");
-        if (btn.textContent.toLowerCase() === this.textContent.toLowerCase()) {
-          btn.classList.add("active");
-        }
-      });
     });
   });
 
-  // Toggle select list
-  filterSelect.addEventListener("click", function () {
-    this.classList.toggle("active");
-    selectList.classList.toggle("active");
+  // Zamknij select po kliknięciu poza
+  document.addEventListener("click", function () {
+    filterSelect.classList.remove("active");
+    selectList.style.opacity = "0";
+    selectList.style.visibility = "hidden";
+    selectList.style.pointerEvents = "none";
   });
 
-  // Zamknij selecta po kliknięciu poza nim
-  document.addEventListener("click", function (e) {
-    if (!filterSelect.contains(e.target)) {
-      filterSelect.classList.remove("active");
-      selectList.classList.remove("active");
-    }
-  });
+  // Inicjalizacja z domyślnym filtrem "All"
+  if (filterButtons.length > 0) {
+    filterButtons[0].click();
+  } else if (selectItems.length > 0) {
+    selectValue.textContent = "All";
+    filterProjects("all");
+  }
 }
 
+// Inicjalizacja po załadowaniu DOM
+document.addEventListener("DOMContentLoaded", initPortfolioFilters);
 // ------------------------- MODAL Z OPINIAMI -------------------------
 
 /**
