@@ -548,3 +548,53 @@ function animateOnScroll() {
 // Inicjalizacja
 window.addEventListener("scroll", animateOnScroll);
 document.addEventListener("DOMContentLoaded", animateOnScroll);
+
+// ------------------------- Dodawanie dynamicznie projektów -------------------------
+
+
+// Funkcja do ładowania projektów
+async function loadProjects() {
+  try {
+    const response = await fetch('./assets/data/projects.json');
+    const data = await response.json();
+    displayProjects(data.projects);
+  } catch (error) {
+    console.error('Błąd podczas ładowania projektów:', error);
+  }
+}
+
+// Funkcja do wyświetlania projektów
+function displayProjects(projects) {
+  const projectsContainer = document.getElementById('projects-container');
+  
+  if (!projectsContainer) return;
+  
+  projectsContainer.innerHTML = '';
+  
+  projects.forEach(project => {
+    const projectItem = document.createElement('li');
+    projectItem.className = 'project-item active';
+    projectItem.setAttribute('data-filter-item', '');
+    projectItem.setAttribute('data-category', project.category);
+    
+    projectItem.innerHTML = `
+      <a href="${project.url}" target="_blank">
+        <figure class="project-img">
+          <div class="project-item-icon-box">
+            <ion-icon name="eye-outline"></ion-icon>
+          </div>
+          <img src="assets/images/${project.image}" alt="${project.title}" loading="lazy">
+        </figure>
+        <h3 class="project-title">${project.title}</h3>
+        <p class="project-category">${project.category === 'web-design' ? 'Web design' : 'Web development'}</p>
+      </a>
+    `;
+    
+    projectsContainer.appendChild(projectItem);
+  });
+}
+
+// Załaduj projekty po załadowaniu DOM
+document.addEventListener('DOMContentLoaded', () => {
+  loadProjects();
+});

@@ -1,0 +1,64 @@
+{
+  "projects": [
+    {
+      "title": "Kawiarenka",
+      "category": "web-design",
+      "image": "Kawiarnua_website.png",
+      "url": "https://dembolx.github.io/Kawiarnia_website/"
+    },
+    {
+      "title": "Pizzeria",
+      "category": "web-design",
+      "image": "dla_restauracji.png",
+      "url": "https://dembolx.github.io/Pizzeria_Website/"
+    },
+    {
+      "title": "3D Model Website",
+      "category": "web-development",
+      "image": "3D_Model.png",
+      "url": "https://dembolx.github.io/3D_Model_Website/"
+    },
+    {
+      "title": "Wizualizacja Danych",
+      "category": "web-development",
+      "image": "wizu_danych.png",
+      "url": "https://dembolx.github.io/Wizualizacja_Danych/"
+    },
+    {
+      "title": "Retro Style",
+      "category": "web-design",
+      "image": "Retro_Website.png",
+      "url": "https://dembolx.github.io/Retro_Website/"
+    },
+    {
+      "title": "Kocia Kawiarnia",
+      "category": "web-design",
+      "image": "kocia_kawiarnia.png",
+      "url": "https://dembolx.github.io/KociaKawiarnia_Website/"
+    },
+    {
+      "title": "Motoryzacja",
+      "category": "web-design",
+      "image": "Motoryzacja.png",
+      "url": "https://dembolx.github.io/Motorization_Website/"
+    },
+    {
+      "title": "Smoky Beans",
+      "category": "web-design",
+      "image": "Smoky_Beans.png",
+      "url": "https://dembolx.github.io/Smoky_Beans/"
+    },
+    {
+      "title": "HYGGE BREW",
+      "category": "web-design",
+      "image": "Hygge_brew.png",
+      "url": "https://dembolx.github.io/HYGGE_BREW/"
+    },
+    {
+      "title": "One Page",
+      "category": "web-development",
+      "image": "Future_Design.png",
+      "url": "https://dembolx.github.io/One_Page/"
+    }
+  ]
+}
