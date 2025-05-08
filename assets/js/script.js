@@ -415,43 +415,78 @@ function initPortfolioFilters() {
   const filterSelect = document.querySelector("[data-select]");
   const selectList = document.querySelector(".select-list");
 
-  // Mapowanie tekstu przycisków na wartości data-category
-  const categoryMap = {
-    all: "all",
-    "web design": "web-design",
-    "web development": "web-development",
-  };
-
-  // Filtrowanie projektów
-  function filterProjects(category) {
+  // Funkcja do filtrowania projektów
+  const filterProjects = (category) => {
     projectItems.forEach((item) => {
-      if (category === "all" || item.dataset.category === category) {
+      const itemCategory = item.dataset.category;
+
+      if (category === "all" || itemCategory === category) {
+        item.style.display = "block";
         item.classList.add("active");
       } else {
+        item.style.display = "none";
         item.classList.remove("active");
       }
     });
-  }
+  };
 
-  // Obsługa przycisków filtrowania
+  // Obsługa przycisków filtrowania (desktop)
   filterButtons.forEach((button) => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", () => {
       // Usuń aktywną klasę ze wszystkich przycisków
       filterButtons.forEach((btn) => btn.classList.remove("active"));
-      // Dodaj aktywną klasę do klikniętego przycisku
-      this.classList.add("active");
 
-      // Pobierz odpowiednią kategorię
-      const buttonText = this.textContent.toLowerCase();
-      const filterValue = categoryMap[buttonText] || "all";
+      // Dodaj aktywną klasę do klikniętego przycisku
+      button.classList.add("active");
+
+      // Pobierz kategorię z data-filter-btn lub tekstu przycisku
+      const category =
+        button.dataset.filterBtn ||
+        button.textContent.toLowerCase().replace(" ", "-");
 
       // Filtruj projekty
-      filterProjects(filterValue);
+      filterProjects(category);
 
       // Aktualizuj wartość selecta
-      selectValue.textContent = this.textContent;
+      selectValue.textContent = button.textContent;
     });
   });
+
+  // Obsługa selecta (mobile)
+  filterSelect.addEventListener("click", (e) => {
+    e.stopPropagation();
+    elementToggleFunc(filterSelect);
+  });
+
+  // Obsługa wyboru w select (mobile)
+  selectItems.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const category =
+        item.dataset.selectItem ||
+        item.textContent.toLowerCase().replace(" ", "-");
+
+      // Filtruj projekty
+      filterProjects(category);
+
+      // Aktualizuj wyświetlaną wartość
+      selectValue.textContent = item.textContent;
+
+      // Zamknij listę selecta
+      filterSelect.classList.remove("active");
+    });
+  });
+
+  // Zamknij select po kliknięciu poza
+  document.addEventListener("click", () => {
+    filterSelect.classList.remove("active");
+  });
+
+  // Aktywuj domyślny filtr "All" na starcie
+  if (filterButtons.length > 0) {
+    filterButtons[0].click();
+  }
 }
 
 // ------------------------- SIDEBAR (MOBILE) -------------------------
